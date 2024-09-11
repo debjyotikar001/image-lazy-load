@@ -37,6 +37,6 @@ return [
   |
   */
   'jquery' => env('IMGLAZYLOAD_JQUERY', false),
-  'jqueryUrl' => env('IMGLAZYLOAD_JQUERY_URL', 'assets/vendor/libs/jquery/jquery.js'),
+  'jqueryUrl' => env('IMGLAZYLOAD_JQUERY_URL', 'https://code.jquery.com/jquery-3.7.1.min.js'),
   
 ];
