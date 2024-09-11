@@ -1,0 +1,38 @@
+{
+  "name": "debjyotikar001/image-lazy-load",
+  "description": "A Laravel package to help users implement image lazy loading using PHP and JavaScript, optimizing page load speeds by only loading images when they are in view.",
+  "keywords": [
+    "laravel",
+    "image",
+    "lazy-load",
+    "image-lazy-load",
+    "image-optimization",
+    "javascript",
+    "performance"
+  ],
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Debjyotikar001\\ImageLazyLoad\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Debjyoti Kar",
+      "email": "debjyotikar001@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
+    "illuminate/http": "^8.0|^9.0|^10.0|^11.0"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Debjyotikar001\\ImageLazyLoad\\ImageLazyLoadServiceProvider"
+      ]
+    }
+  }
+}
