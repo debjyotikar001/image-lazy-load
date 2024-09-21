@@ -3,6 +3,7 @@
 namespace Debjyotikar001\ImageLazyLoad\Middleware;
 
 use Closure;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,6 +20,15 @@ class ImgLazyload
 
         if ($response->isSuccessful() && config('imagelazyload.enabled')) {
             $content = $response->getContent();
+
+            if (!in_array(config('app.env'), explode(',', config('imagelazyload.allowed_envs')))) { return $response; }
+
+            if (!empty(config('imagelazyload.skip_urls'))) {
+                $currentUrl = $request->path();
+                foreach (config('imagelazyload.skip_urls') as $item) {
+                  if (Str::is($item, $currentUrl)) { return $response; }
+                }
+            }
 
             // Replace all img src with data-src in the HTML content
             $content = preg_replace('/<img([^>]*?)src=/', '<img$1data-src=', $content);
@@ -87,7 +97,6 @@ class ImgLazyload
                 loadImages();
                 </script>";
 
-            // If JQuery is enabled
             $javascriptCode = config('imagelazyload.jquery') ? $jquery : $javascript;
             
             // Add javascript code in the HTML content

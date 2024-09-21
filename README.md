@@ -75,6 +75,40 @@ You must set `true` on `enabled` in the `config/imagelazyload.php` file enable i
 'enabled' => env('IMGLAZYLOAD_ENABLED', true),
 ```
 
+### Jquery for Lazy Loading
+If you want to use Jquery to handle lazy loading, then set `true` on `jquery` and you can specify its CDN URL on `jqueryUrl` in the `config/imagelazyload.php` file. For example:
+
+```php
+'jquery' => env('IMGLAZYLOAD_JQUERY', true),
+'jqueryUrl' => env('IMGLAZYLOAD_JQUERY_URL', 'https://code.jquery.com/jquery-3.7.1.min.js'),
+```
+
+### Allowed Environments
+If you want to disable it in specific environments such as during local development or testing to simplify debugging. Then set environments values in a comma (`,`) separated string in the `config/imagelazyload.php` file, default `local,production,staging`. For example:
+
+```php
+'allowed_envs' => env('IMGLAZYLOAD_ALLOWED_ENVS', 'local,production,staging'),
+```
+
+### Skip or Ignore specific Routes Urls
+If you want to skip or ignore specific routes urls, then you have to set paths in the `config/imagelazyload.php` file. You can use '*' as wildcard. For example:
+
+```php
+'skip_urls' => [
+    '/',
+    'about',
+    'user/*',
+    '*_dashboard',
+    '*/download/*',
+  ],
+```
+#### Example URLs:
+- `/`: Home URL will be excluded from minification.
+- `about`: This exact URL will be excluded from minification.
+- `user/*`: Any URL starting with `user/` (like `user/profile`, `user/settings`) will be excluded.
+- `*_dashboard`: Any URL ending with `_dashboard` (like `admin_dashboard`, `user_dashboard`) will be excluded.
+- `*/download/*`: Any URL has `download` (like `pdf/download/001`, `image/download/debjyotikar001`) will be excluded.
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.

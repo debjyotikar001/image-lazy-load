@@ -39,4 +39,35 @@ return [
   'jquery' => env('IMGLAZYLOAD_JQUERY', false),
   'jqueryUrl' => env('IMGLAZYLOAD_JQUERY_URL', 'https://code.jquery.com/jquery-3.7.1.min.js'),
   
+  /*
+  |--------------------------------------------------------------------------
+  | Allowed Environments
+  |--------------------------------------------------------------------------
+  |
+  | Define the environments where the lazy loading are enabled. You may
+  | disable it in specific environments such as during local development or
+  | testing to simplify debugging. Values must be in a comma (,) separated
+  | string.
+  |
+  | Default: local,production,staging
+  |
+  */
+  'allowed_envs' => env('IMGLAZYLOAD_ALLOWED_ENVS', 'local,production,staging'),
+
+  /*
+  |--------------------------------------------------------------------------
+  | Skip or Ignore Routes Urls
+  |--------------------------------------------------------------------------
+  |
+  | Here you can specify routes urls paths, which you don't want to optimise.
+  | You can use '*' as wildcard.
+  |
+  */
+  'skip_urls' => [
+      // '/',
+      // 'about',
+      // 'user/*',
+      // '*_dashboard',
+      // '*/download/*',
+    ],
 ];
