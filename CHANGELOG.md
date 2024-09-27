@@ -12,3 +12,9 @@
 ### New Features
 - Skip Routes Urls.
 - Environment Control.
+
+## [3.0.0] - 2024-09-27
+### Update
+- Package name changed `ImageLazyLoad` to `MediaLazyLoad`
+### Added
+- Add Support of iframes, videos and audios.
