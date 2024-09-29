@@ -8,6 +8,7 @@ A Laravel package to help users implement media lazy loading using PHP and JavaS
 2. Supports excluding specific routes urls paths from being media lazy loading. [Read More...](#skip-or-ignore-specific-routes-urls)
 3. Configurable to skip lazy loading for specific application Environment. [Read More...](#allowed-environments)
 4. Easy integration with Laravel's middleware system. [Read More...](#register-the-middleware)
+5. Supports lazy loading of background images set via inline CSS `background-image:url(...)`.
 
 ## Installation
 
