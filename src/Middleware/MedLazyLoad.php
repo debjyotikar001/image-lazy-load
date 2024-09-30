@@ -44,63 +44,77 @@ class MedLazyLoad
         $content
       );
 
-      $jsIsInViewport = "function isInViewport(e) {
-          const r = e.getBoundingClientRect();
-          return (
-            r.top >= 0 && r.left >= 0 &&
-            r.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-            r.right <= (window.innerWidth || document.documentElement.clientWidth)
-          );
-        }";
-
       // JavaScript code
-      $javascript = "<script>" . $jsIsInViewport . "
-          function loadMedia() {
-            const mediaElements = document.querySelectorAll('img, iframe, video source, audio source'),
-              bgElements = document.querySelectorAll('[data-bg]');
-            mediaElements.forEach(media => {
-              const dataSrc = media.getAttribute('data-src');
-              if (media.offsetParent !== null && dataSrc && isInViewport(media) && !media.getAttribute('data-loaded')) {
-                media.setAttribute('src', dataSrc);
-                media.setAttribute('data-loaded', 'true');
-                media.removeAttribute('data-src');
+      $javascript = "<script>
+          let loadMedia = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                let ele = entry.target;
+                if (['IMG', 'IFRAME'].includes(ele.tagName)) {
+                  const dataSrc = ele.getAttribute('data-src');
+                  if (dataSrc) {
+                    ele.setAttribute('src', dataSrc);
+                    ele.removeAttribute('data-src');
+                  }
+                }
+                if (ele.tagName === 'SOURCE') {
+                  const dataSrc = ele.getAttribute('data-src');
+                  if (dataSrc) {
+                    ele.setAttribute('src', dataSrc);
+                    ele.removeAttribute('data-src');
+                    ele.closest('video, audio').load();
+                  }
+                }
+                if (ele.hasAttribute('data-bg')) {
+                  const bgUrl = ele.getAttribute('data-bg');
+                  ele.style.backgroundImage = 'url(' + bgUrl + ')';
+                  ele.removeAttribute('data-bg');
+                }
+                observer.unobserve(ele);
               }
             });
-            bgElements.forEach(bg => {
-              const bgUrl = bg.getAttribute('data-bg');
-              if (bgUrl && isInViewport(bg) && !bg.getAttribute('data-loaded-bg')) {
-                bg.style.backgroundImage = 'url(' + bgUrl + ')';
-                bg.setAttribute('data-loaded-bg', 'true');
-                bg.removeAttribute('data-bg');
-              }
-            });
-          }
+          }, {
+            rootMargin: '0px 0px 100px 0px',
+            threshold: 0.1
+          });
 
-          window.addEventListener('scroll', loadMedia);
-          window.addEventListener('resize', loadMedia);
-          window.addEventListener('mousemove', loadMedia);
-          loadMedia();
+          document.querySelectorAll('img[data-src], iframe[data-src], source[data-src], [data-bg]').forEach((element) => {
+            loadMedia.observe(element);
+          });
         </script>";
 
       // JQuery code
-      $jquery = "<script src='" . config('medialazyload.jqueryUrl') . "'></script><script>" . $jsIsInViewport . "
-          function loadMedia() {
-            $('img, iframe, video source, audio source').each(function() {
-              const media = $(this), dataSrc = media.data('src');
-              if (media.is(':visible') && dataSrc && isInViewport(this) && !media.data('loaded')) {
-                media.attr('src', dataSrc).data('loaded', true).removeAttr('data-src');
+      $jquery = "<script src='" . config('medialazyload.jqueryUrl') . "'></script><script>
+          let loadMedia = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const ele = $(entry.target);
+                if (ele.is('img, iframe')) {
+                  const dataSrc = ele.data('src');
+                  if (dataSrc) { ele.attr('src', dataSrc).removeAttr('data-src'); }
+                }
+                if (ele.is('source')) {
+                  const dataSrc = ele.data('src');
+                  if (dataSrc) {
+                    ele.attr('src', dataSrc).removeAttr('data-src');
+                    ele.closest('video, audio')[0].load();
+                  }
+                }
+                if (ele.data('bg')) {
+                  const bgUrl = ele.data('bg');
+                  ele.css('background-image', 'url(' + bgUrl + ')').removeAttr('data-bg');
+                }
+                observer.unobserve(ele);
               }
             });
-            $('[data-bg]').each(function() {
-              const bg = $(this), bgUrl = bg.data('bg');
-              if (bgUrl && bg.is(':visible') && isInViewport(this) && !bg.data('loaded-bg')) {
-                bg.css('background-image', 'url(' + bgUrl + ')').data('loaded-bg', true).removeAttr('data-bg');
-              }
-            });
-          }
+          }, {
+            rootMargin: '0px 0px 100px 0px',
+            threshold: 0.1
+          });
 
-          $(window).on('scroll resize mousemove', loadMedia);
-          loadMedia();
+          $('img[data-src], iframe[data-src], source[data-src], [data-bg]').each(function() {
+            loadMedia.observe(this);
+          });
         </script>";
 
       $javascriptCode = config('medialazyload.jquery') ? $jquery : $javascript;
