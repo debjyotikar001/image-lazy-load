@@ -84,7 +84,7 @@ class MedLazyLoad
         </script>";
 
       // JQuery code
-      $jquery = "<script src='" . config('medialazyload.jqueryUrl') . "'></script><script>
+      $jquery = "<script>
           let loadMedia = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
               if (entry.isIntersecting) {
@@ -104,7 +104,7 @@ class MedLazyLoad
                   const bgUrl = ele.data('bg');
                   ele.css('background-image', 'url(' + bgUrl + ')').removeAttr('data-bg');
                 }
-                observer.unobserve(ele);
+                observer.unobserve(entry.target);
               }
             });
           }, {
@@ -117,7 +117,12 @@ class MedLazyLoad
           });
         </script>";
 
-      $javascriptCode = config('medialazyload.jquery') ? $jquery : $javascript;
+      $javascriptCode = $javascript;
+      if (config('medialazyload.jquery')) {
+        $content = str_replace('</head>', '<script src="' . config('medialazyload.jqueryUrl') . '"></script></head>', $content);
+        $javascriptCode = $jquery;
+      }
+
       $content = str_replace('</body>', $javascriptCode . '</body>', $content);
 
       $response->setContent($content);
