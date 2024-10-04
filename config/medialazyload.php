@@ -70,4 +70,32 @@ return [
       // '*_dashboard',
       // '*/download/*',
     ],
+
+  /*
+  |--------------------------------------------------------------------------
+  | Root Margin
+  |--------------------------------------------------------------------------
+  |
+  | Here you can specify when to start loading the elements before or after
+  | they enter the viewport.
+  | Format: 'top right bottom left'
+  |
+  | Default: '0px 0px 100px 0px'
+  |
+  */
+  'rootMargin' => env('MEDLAZYLOAD_ROOTMARGIN', '0px 0px 100px 0px'),
+
+  /*
+  |--------------------------------------------------------------------------
+  | Threshold
+  |--------------------------------------------------------------------------
+  |
+  | Here you can defines how much of the element is visible before lazy
+  | loading is triggered. The value can range from 0 to 1.
+  |
+  | Default: 0.1
+  |
+  */
+  'threshold' => env('MEDLAZYLOAD_THRESHOLD', 0.1),
+
 ];

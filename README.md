@@ -9,6 +9,8 @@ A Laravel package to help users implement media lazy loading using PHP and JavaS
 3. Configurable to skip lazy loading for specific application Environment. [Read More...](#allowed-environments)
 4. Easy integration with Laravel's middleware system. [Read More...](#register-the-middleware)
 5. Supports lazy loading of background images set via inline CSS `background-image:url(...)`.
+6. Customizable root margin allows you to control when elements start loading relative to their position in the viewport. [Read More...](#root-margin)
+7. Adjustable threshold defines how much of an element must be visible before it loads. [Read More...](#threshold)
 
 ## Installation
 
@@ -116,6 +118,28 @@ If you want to skip or ignore specific routes urls, then you have to set paths i
 - `user/*`: Any URL starting with `user/` (like `user/profile`, `user/settings`) will be excluded.
 - `*_dashboard`: Any URL ending with `_dashboard` (like `admin_dashboard`, `user_dashboard`) will be excluded.
 - `*/download/*`: Any URL has `download` (like `pdf/download/001`, `image/download/debjyotikar001`) will be excluded.
+
+### Root Margin
+This option allows you to control how early or late the elements should be lazy-loaded relative to their position in the viewport. You can set values in the `config/medialazyload.php` file, default `'0px 0px 100px 0px'`. Format: `'top right bottom left'`. For example:
+
+```php
+'rootMargin' => env('MEDLAZYLOAD_ROOTMARGIN', '0px 0px 100px 0px'),
+```
+Here `'0px 0px 100px 0px'` means that elements will start loading 100px before they enter the viewport from the bottom. You can also use percentages (e.g., `'10% 0px 0px 0px'`).
+
+### Threshold
+This option allows you to control how much of an element must be visible in the viewport before it starts loading. It accepts a value between `0` and `1`. You can set values in the `config/medialazyload.php` file, default `0.1`. For example:
+
+```php
+'threshold' => env('MEDLAZYLOAD_THRESHOLD', 0.1),
+```
+Here `0.1` means the element will start loading when 10% of it is visible in the viewport.
+
+#### Example values:
+- `0` means elements will start loading as soon as one pixel is visible.
+- `1` means the element will only load when it's fully visible in the viewport.
+- `0.05` means that 5% of the element needs to be visible before loading starts.
+- `0.1` means that 10% of the element needs to be visible before loading starts.
 
 ## Changelog
 

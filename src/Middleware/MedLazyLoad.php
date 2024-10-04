@@ -74,8 +74,8 @@ class MedLazyLoad
               }
             });
           }, {
-            rootMargin: '0px 0px 100px 0px',
-            threshold: 0.1
+            rootMargin: '" . config('medialazyload.rootMargin') . "',
+            threshold: " . config('medialazyload.threshold') . "
           });
 
           document.querySelectorAll('img[data-src], iframe[data-src], source[data-src], [data-bg]').forEach((element) => {
@@ -108,8 +108,8 @@ class MedLazyLoad
               }
             });
           }, {
-            rootMargin: '0px 0px 100px 0px',
-            threshold: 0.1
+            rootMargin: '" . config('medialazyload.rootMargin') . "',
+            threshold: " . config('medialazyload.threshold') . "
           });
 
           $('img[data-src], iframe[data-src], source[data-src], [data-bg]').each(function() {

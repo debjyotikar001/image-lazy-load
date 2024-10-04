@@ -18,3 +18,7 @@
 - Package name changed `ImageLazyLoad` to `MediaLazyLoad`
 ### Added
 - Add Support of iframes, videos and audios.
+
+## [3.1.0] - 2024-10-04
+### Added
+- Added lazy loading control
